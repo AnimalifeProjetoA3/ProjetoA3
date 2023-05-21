@@ -1,0 +1,145 @@
+@import
+url('https://fonts.googleapis.com/css2? family= Roboto:wght@300;400 & display=swap');
+
+body {
+    font-family: Roboto, sans-serif;
+    padding: 0;
+    margin: 0;
+
+}
+
+.cabecalho{
+    background-color: #05a728;
+    width: 100%;
+    height: 110px;
+    position: relative;
+    color: white;
+}
+a{
+    font-weight: 500;
+    font-size: 30px;
+    color: white;
+    margin-left: 140px;
+    top: 35%;
+    position: relative;
+    text-decoration: none;
+}
+
+.animalife{
+    font-weight: 600;
+    font-size: 27px;
+    color: white;
+    margin-left: 1100px;
+    top: -20%;
+    position: relative;
+}
+.titulo{
+    position: relative;
+    font-weight: 600;
+    font-size: 35px;
+    color: black;
+    margin-left: 245px;
+    margin-top: 70px;
+}
+.formulario{
+    position: absolute;
+    margin-top: -50px;
+    margin-left: 30px;
+}
+label{
+    position: relative;
+    font-weight: 600;
+    font-size: 23px;
+    color: black;
+    margin-top: 20%;
+    margin-left: 20%;
+    justify-content: flex-end;
+}
+
+.labelImagem{
+    margin-top:20px;
+}
+
+.phone{
+    margin-left: 95px;
+}
+input{
+    position: absolute;
+    width: 300px;
+    height: 20px;
+    border: 1px solid #bfbfbf;
+    border-radius: 10px;
+    margin-left: 10%;
+}
+
+.inputImagem{
+    margin: 15px;
+    margin-top: -5px;
+    padding: 10px;
+    border: none;
+}
+.inputTel{
+    margin-left: 32px;
+}
+
+.inputNome{
+    margin-left: 57px;
+}
+
+.inputEmail{
+    margin-left: 62px;
+}
+
+.inputSenha{
+    margin-left: 55px;
+}
+
+textarea{
+    margin-left: 20%;
+    width: 480px;
+    border-radius: 10px;
+    resize:none;
+    outline: none;
+    border: 1px solid #bfbfbf;
+}
+
+.botaoConfirmar{
+    width: 250px;
+    height: 60px;
+    background: #05a728;
+    box-shadow: 4px 4px 5px rgba(0,0,0,0.5);
+    border-radius: 10px;
+    color: white;
+    font-size: 30px;
+    padding: 15px;
+    border: none;
+    margin-left: 180px;
+    margin-top: 5%;
+    cursor: pointer;
+}
+.botaoConfirmar:hover{
+    background: darkgreen;
+}
+.obraprima{
+
+    margin-top: 10%;
+    margin-left: 60%;
+    position: absolute;
+}
+.assinatura{
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 850px;
+    color: #9d9d9d;
+    z-index: 2;
+    position: absolute;
+    margin-left: 48%;
+}
+.imagemVoltar{
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    margin-top: 34px;
+    margin-left: 100px;
+}
