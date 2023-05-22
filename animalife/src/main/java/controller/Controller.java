@@ -140,7 +140,7 @@ public class Controller extends HttpServlet {
         //Caminho absoluto da pasta Imagens
         //IMPORTANTE 
         //ADAPTAR PARA SUA MAQUINA
-        String salvarPath = "G:\\\\Meu Drive\\\\ImagensAnimalife" + File.separator + filename;
+        String salvarPath = "..\\..\\resources\\imagens" + File.separator + filename;
         //File file = new File(salvarPath);
         
         
