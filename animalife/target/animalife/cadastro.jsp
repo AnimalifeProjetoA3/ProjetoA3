@@ -49,10 +49,11 @@
                     <br><br>
                     <textarea name="descricaoAnimal" cols="30" rows="10" maxlength="77" required></textarea>
                     <br><br>
-                    <label for="imagem">Imagem:</label>
-                    <input type="file" name="imagem" class="inputImagem" required>
+                    <label for="img">Imagem:</label>
+                    <input type="file" name="img" class="inputImagem" id="imagem" onchange="converterImagem()" required>
                     <br><br>
                     <button class="botaoConfirmar" type="submit">Confirmar</button>
+                    <input type="hidden" name="imagem" id="imgBanco">
                 </form>
             </div>
             <img class="obraprima" src="imagensProjeto/ImagemCriar.png" alt="text">
@@ -67,16 +68,39 @@
             var mensagem = document.getElementById("mensagem").value;
 
             console.log(mensagem);
-
+            
             if (mensagem === "sucesso") {
                 Swal.fire({
                     icon: 'success',
                     title: 'Conta Criada Com Sucesso!!',
-                    text: 'Parab�ns, sua conta foi criada e agora voc� pode voltar para a tela de login!',
+                    text: 'Parabéns, sua conta foi criada e agora você pode voltar para a tela de login!',
                     confirmButtonColor: "rgb(5,167,40)"
                 });
             }
 
+               //Converte a imagem para a base64
+        function converterImagem() {
+            const img = document.querySelector("#imagem").files;
+
+            if (img.length > 0) {
+                var carregarimg = img[0];
+
+
+                //Função permite que ler o conteúdo do computador do usuário
+                var lerArquivo = new FileReader();
+
+                lerArquivo.onload = function (arquivoCarregado) {
+
+                    var imgBase64 = arquivoCarregado.target.result;
+                    // console.log(imgBase64);
+
+                    document.querySelector("#imgBanco").value = imgBase64;
+
+                }
+
+                lerArquivo.readAsDataURL(carregarimg);
+            }
+        }
         </script>
     </body>
 </html>

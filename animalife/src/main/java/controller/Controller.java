@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.File;
 import java.io.IOException;
 //import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -21,18 +20,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 import model.Dao;
 import model.Usuario;
 
 //Mapeamento dos Actions 
-@WebServlet(urlPatterns = {"/Controller", "/main", "/create", "/select", "/updateSenha", "/exit", "/selectName", "/delete", "/updateAnimal", "/alterarSenha"})
+@WebServlet(urlPatterns = { "/Controller", "/main", "/create", "/select", "/updateSenha", "/exit", "/selectName",
+        "/delete", "/updateAnimal", "/alterarSenha" })
 
-//Configurações de Files 
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,
-        maxFileSize = 1024 * 1024 * 10,
-        maxRequestSize = 1024 * 1024 * 50)
+// Configurações de Files
+@MultipartConfig(fileSizeThreshold = 0, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024 * 50)
 
 public class Controller extends HttpServlet {
 
@@ -45,7 +42,7 @@ public class Controller extends HttpServlet {
         super();
     }
 
-    //Nome da pasta que será salvo as imagens enviadas.
+    // Nome da pasta que será salvo as imagens enviadas.
     public static final String UPLOAD_DIR = "Imagens";
 
     @Override
@@ -53,7 +50,7 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getServletPath();
         // Mostra no terminal a requisição feita
-        //System.out.println(action);
+        // System.out.println(action);
 
         switch (action) {
             case "/create":
@@ -83,13 +80,12 @@ public class Controller extends HttpServlet {
         }
 
         /*
-               * Teste de conexão com o banco de dados 
-                  dao.testaConexao();
+         * Teste de conexão com o banco de dados
+         * dao.testaConexao();
          */
     }
 
-    
-    //Método Post
+    // Método Post
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -121,7 +117,7 @@ public class Controller extends HttpServlet {
     protected void create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=ISO-8859-1");
-       // PrintWriter out = response.getWriter();
+        // PrintWriter out = response.getWriter();
 
         // Resgatando os dados digitados no formulário
         usuario.setNome(request.getParameter("nome"));
@@ -132,52 +128,40 @@ public class Controller extends HttpServlet {
         usuario.setEstado(request.getParameter("estado"));
         usuario.setNomeAnimal(request.getParameter("nomeAnimal"));
         usuario.setDescricaoAnimal(request.getParameter("descricaoAnimal"));
+        String img = request.getParameter("imagem");
+        // Salva o caminho da imagem
+        // Part part = request.getPart("imagem");
+        // String filename = extractFileName(part);
 
-        //Salva o caminho da imagem
-        Part part = request.getPart("imagem");
-        String filename = extractFileName(part);
+        // Caminho absoluto da pasta Imagens
+        // IMPORTANTE
+        // ADAPTAR PARA SUA MAQUINA
+        // String salvarPath = "\\src\\main\\resources\\imagens" + File.separator +
+        // filename;
+        // File file = new File(salvarPath);
 
-        //Caminho absoluto da pasta Imagens
-        //IMPORTANTE 
-        //ADAPTAR PARA SUA MAQUINA
-        String salvarPath = "..\\..\\resources\\imagens" + File.separator + filename;
-        //File file = new File(salvarPath);
-        
-        
-        part.write(salvarPath + File.separator);
+        // part.write(salvarPath + File.separator);
 
-        //  System.out.println(salvarPath);
-        //String sRootPath = new File(salvarPath).getAbsolutePath();
-        //   System.out.println(sRootPath);
+        // System.out.println(salvarPath);
+        // String sRootPath = new File(salvarPath).getAbsolutePath();
+        // System.out.println(sRootPath);
 
-        part.write(salvarPath + File.separator);
-       // File fileSaveDir = new File(salvarPath);
+        // part.write(salvarPath + File.separator);
+        // // File fileSaveDir = new File(salvarPath);
 
-        //String dbFileName = UPLOAD_DIR + File.separator + filename;
-        part.write(salvarPath + File.separator);
+        // //String dbFileName = UPLOAD_DIR + File.separator + filename;
+        // part.write(salvarPath + File.separator);
 
-       // String relativoPath = "Imagens/" + filename;
+        // String relativoPath = "Imagens/" + filename;
 
-        // Método para cadastrar o usuário e o nome da imagem no banco de dados 
-        dao.adicionar(usuario, salvarPath);
+        // Método para cadastrar o usuário e o nome da imagem no banco de dados
+        dao.adicionar(usuario, img);
 
-        //Cria a variável mensagem que recebe "sucesso" como atributo 
+        // Cria a variável mensagem que recebe "sucesso" como atributo
         request.setAttribute("mensagem", "sucesso");
 
         RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
         rd.forward(request, response);
-    }
-
-    //Método para localizar o nome da imagem
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length() - 1);
-            }
-        }
-        return "";
     }
 
     // Select do Email e Senha
@@ -194,7 +178,7 @@ public class Controller extends HttpServlet {
             // Insere todos os dados no objeto Usuário por meio de um SELECT no login
             dao.consultarDados(request.getParameter("email"), usuario);
 
-            //Cria uma seção para o usuário logado
+            // Cria uma seção para o usuário logado
             HttpSession session = request.getSession();
             session.setAttribute("usuarioLogado", usuario);
 
@@ -205,7 +189,7 @@ public class Controller extends HttpServlet {
         } else {
 
             // Teste de verificação do login
-            //System.out.println("Email e/ou Senha Incorretos");
+            // System.out.println("Email e/ou Senha Incorretos");
             // Envia para o index.jsp uma variável
             request.setAttribute("mensagem", "erro");
 
@@ -214,7 +198,8 @@ public class Controller extends HttpServlet {
         }
     }
 
-    // Update da senha por meio da classe Random e o envio de e-mail com a senha temporária 
+    // Update da senha por meio da classe Random e o envio de e-mail com a senha
+    // temporária
     protected void modificarSenha(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         usuario.setId("");
@@ -225,7 +210,7 @@ public class Controller extends HttpServlet {
         usuario.setDescricaoAnimal("");
         usuario.setImagemAnimal("");
 
-        //  System.out.println(request.getParameter("email"));
+        // System.out.println(request.getParameter("email"));
         dao.consultarDados(request.getParameter("email"), usuario);
 
         if (!(usuario.getId().isEmpty())) {
@@ -277,7 +262,8 @@ public class Controller extends HttpServlet {
 
                 mensagem.setContent("<html>Olá, " + "" + usuario.getNome() + "," + "<br><br>"
                         + "Conforme sua solicitação, segue abaixo sua nova senha. Esta senha é temporária e precisa ser alterada.<br><br>"
-                        + "Para alterá-la, entre com a nova senha, siga para a engrenagem no canto superior esquerdo da página principal e selecione a opção de alterar senha.<br>" + "Nova Senha: " + "" + senha + "<br><br>" + "\n"
+                        + "Para alterá-la, entre com a nova senha, siga para a engrenagem no canto superior esquerdo da página principal e selecione a opção de alterar senha.<br>"
+                        + "Nova Senha: " + "" + senha + "<br><br>" + "\n"
                         + "Atenciosamente,<br>" + "Animalife.</html>", "text/html;charset=utf-8");
 
                 Transport.send(mensagem);
@@ -293,10 +279,10 @@ public class Controller extends HttpServlet {
                 e.printStackTrace();
             }
         } else {
-                  request.setAttribute("email", "invalido");
+            request.setAttribute("email", "invalido");
 
-                RequestDispatcher rd = request.getRequestDispatcher("recuperarConta.jsp");
-                rd.forward(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher("recuperarConta.jsp");
+            rd.forward(request, response);
         }
 
     }
@@ -346,7 +332,7 @@ public class Controller extends HttpServlet {
         String id = request.getParameter("id");
         String nomeAnimal = request.getParameter("nomeAnimal");
         String descricao = request.getParameter("descricaoAnimal");
-        //String email = request.getParameter("email");
+        // String email = request.getParameter("email");
 
         dao.updateAnimal(id, nomeAnimal, descricao);
 

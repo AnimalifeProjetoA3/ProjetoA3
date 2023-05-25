@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: model.TestDao
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.132 s - in model.TestDao
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.585 s - in model.TestDao

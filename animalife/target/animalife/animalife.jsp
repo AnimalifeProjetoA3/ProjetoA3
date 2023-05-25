@@ -33,7 +33,7 @@
 
         %>
 
-        AAAAAAAAAAA
+        
 
         <input type="hidden" id="identificador"
                value="<%=usuarioLogado.getId()%>">
