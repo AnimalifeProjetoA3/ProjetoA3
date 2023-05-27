@@ -78,6 +78,15 @@
                 });
             }
 
+            if(mensagem === "existente"){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'E-mail já existe em nossa base de dados.',
+                    text: 'Por favor, cadastre-se com outro e-mail.',
+                    confirmButtonColor: "rgb(5,167,40)"
+                });
+            }
+
                //Converte a imagem para a base64
         function converterImagem() {
             const img = document.querySelector("#imagem").files;

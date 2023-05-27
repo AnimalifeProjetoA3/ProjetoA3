@@ -18,7 +18,7 @@ public class Dao {
     // Adaptar as configurações do seu banco
     private String driver = "com.mysql.cj.jdbc.Driver";
 
-    private String url = "jdbc:mysql://localhost:3306/animalife?useTimezone=true&serverTimezone=UTC";
+    private String url = "jdbc:mysql://localhost:3306/animalife?useTimezone=true&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8";
 
     private static final String USERNAME = "root";
 

@@ -116,52 +116,40 @@ public class Controller extends HttpServlet {
     // Cadastrar usuario
     protected void create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=ISO-8859-1");
-        // PrintWriter out = response.getWriter();
+      
 
-        // Resgatando os dados digitados no formulário
-        usuario.setNome(request.getParameter("nome"));
+        usuario.setId("");
         usuario.setEmail(request.getParameter("email"));
-        usuario.setSenha(request.getParameter("senha"));
-        usuario.setTelefone(request.getParameter("telefone"));
-        usuario.setCidade(request.getParameter("cidade"));
-        usuario.setEstado(request.getParameter("estado"));
-        usuario.setNomeAnimal(request.getParameter("nomeAnimal"));
-        usuario.setDescricaoAnimal(request.getParameter("descricaoAnimal"));
-        String img = request.getParameter("imagem");
-        // Salva o caminho da imagem
-        // Part part = request.getPart("imagem");
-        // String filename = extractFileName(part);
 
-        // Caminho absoluto da pasta Imagens
-        // IMPORTANTE
-        // ADAPTAR PARA SUA MAQUINA
-        // String salvarPath = "\\src\\main\\resources\\imagens" + File.separator +
-        // filename;
-        // File file = new File(salvarPath);
+        dao.consultarDados(request.getParameter("email"), usuario);
 
-        // part.write(salvarPath + File.separator);
+        if (!(usuario.getId().isEmpty())) {
+            request.setAttribute("mensagem", "existente");
 
-        // System.out.println(salvarPath);
-        // String sRootPath = new File(salvarPath).getAbsolutePath();
-        // System.out.println(sRootPath);
+            RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
+            rd.forward(request, response);
 
-        // part.write(salvarPath + File.separator);
-        // // File fileSaveDir = new File(salvarPath);
+        } else {
 
-        // //String dbFileName = UPLOAD_DIR + File.separator + filename;
-        // part.write(salvarPath + File.separator);
+            // Resgatando os dados digitados no formulário
+            usuario.setNome(request.getParameter("nome"));
+            usuario.setSenha(request.getParameter("senha"));
+            usuario.setTelefone(request.getParameter("telefone"));
+            usuario.setCidade(request.getParameter("cidade"));
+            usuario.setEstado(request.getParameter("estado"));
+            usuario.setNomeAnimal(request.getParameter("nomeAnimal"));
+            usuario.setDescricaoAnimal(request.getParameter("descricaoAnimal"));
+            String img = request.getParameter("imagem");
 
-        // String relativoPath = "Imagens/" + filename;
+            // Método para cadastrar o usuário e o nome da imagem no banco de dados
+            dao.adicionar(usuario, img);
 
-        // Método para cadastrar o usuário e o nome da imagem no banco de dados
-        dao.adicionar(usuario, img);
+            // Cria a variável mensagem que recebe "sucesso" como atributo
+            request.setAttribute("mensagem", "sucesso");
 
-        // Cria a variável mensagem que recebe "sucesso" como atributo
-        request.setAttribute("mensagem", "sucesso");
-
-        RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
-        rd.forward(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
+            rd.forward(request, response);
+        }
     }
 
     // Select do Email e Senha
