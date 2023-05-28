@@ -116,7 +116,7 @@ public class Controller extends HttpServlet {
     // Cadastrar usuario
     protected void create(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
+        
 
         usuario.setId("");
         usuario.setEmail(request.getParameter("email"));
