@@ -9,6 +9,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.*;
 
 import org.junit.*;
 import org.mockito.Mockito;
@@ -24,6 +25,8 @@ public class TestController {
     RequestDispatcher rd;
     Usuario usuario;
     Dao dao = new Dao();
+    TestDao td = new TestDao();
+    Controller controller = new Controller();
 
     @Before
     public void init() {
@@ -60,7 +63,7 @@ public class TestController {
             // chamado com o argumento correto usando o método when() do Mockito
             when(request.getRequestDispatcher("cadastro.jsp")).thenReturn(rd);
 
-            new Controller().create(request, response);
+            controller.create(request, response);
 
             // Verifica se o método foi chamado, nesse caso após cadastrar no banco
             // é encaminhado para o usuário uma mensagem de confirmação do cadastro
@@ -87,7 +90,7 @@ public class TestController {
 
             when(request.getRequestDispatcher("cadastro.jsp")).thenReturn(rd);
 
-            new Controller().create(request, response);
+            controller.create(request, response);
 
             // O conteúdo precisa ser diferente do anterior, pois o e-mail foi cadastrando
             // anteriormente
@@ -110,7 +113,7 @@ public class TestController {
 
             when(request.getRequestDispatcher("animalife.jsp")).thenReturn(rd);
 
-            new Controller().select(request, response);
+            controller.select(request, response);
 
             // Se método nunca foi chamado, logo o login foi realizado com sucesso
             verify(request, never()).setAttribute("mensagem", "erro");
@@ -133,7 +136,7 @@ public class TestController {
 
             when(request.getRequestDispatcher("animalife.jsp")).thenReturn(rd);
 
-            new Controller().select(request, response);
+            controller.select(request, response);
 
             verify(request).setAttribute("mensagem", "erro");
 
@@ -151,7 +154,7 @@ public class TestController {
 
             when(request.getRequestDispatcher("recuperarConta.jsp")).thenReturn(rd);
 
-            new Controller().modificarSenha(request, response);
+            controller.modificarSenha(request, response);
 
             verify(request).setAttribute("email", "enviado");
 
@@ -170,7 +173,7 @@ public class TestController {
 
             when(request.getRequestDispatcher("recuperarConta.jsp")).thenReturn(rd);
 
-            new Controller().modificarSenha(request, response);
+            controller.modificarSenha(request, response);
 
             verify(request).setAttribute("email", "invalido");
 
@@ -179,6 +182,99 @@ public class TestController {
 
         }
 
+    }
+
+    @Test
+    public void testSelecionarAnimalExistente() {
+        try {
+
+            when(request.getParameter("nomeAnimal")).thenReturn("Cavalo");
+
+            when(request.getRequestDispatcher("animalifeResultado.jsp")).thenReturn(rd);
+
+            controller.selecionarAnimal(request, response);
+
+            // Se não retorna nenhum contéudo dentro do atributo, os dados foram enviados
+            // com sucesso
+            verify(request).setAttribute("retorno", "");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testAlterarInfoAnimal() {
+        try {
+            when(request.getParameter("id")).thenReturn(td.idAtual());
+            when(request.getParameter("nomeAnimal")).thenReturn("Cavalo Árabe");
+            when(request.getParameter("descricaoAnimal"))
+                    .thenReturn("é uma raça equina originada na Península Arábica");
+
+            when(request.getRequestDispatcher("alterarInformacoes.jsp")).thenReturn(rd);
+
+            controller.alterarInfoAnimal(request, response);
+
+            verify(request).setAttribute("retorno", "true");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testAtualizarSenhaCorreta() {
+        try {
+
+            when(request.getParameter("email")).thenReturn("testeMock@mail.com");
+            when(request.getParameter("senhaAtual")).thenReturn("123456");
+            when(request.getParameter("novaSenha")).thenReturn("senhaNova@1015");
+
+            when(request.getRequestDispatcher("modificarSenha.jsp")).thenReturn(rd);
+
+            controller.atualizarSenha(request, response);
+
+            verify(request).setAttribute("retorno", "true");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testAtualizarSenhaIncorreta() {
+        try {
+
+            when(request.getParameter("email")).thenReturn("testeMock@mail.com");
+            when(request.getParameter("senhaAtual")).thenReturn("senhaErrada");
+            when(request.getParameter("novaSenha")).thenReturn("senhaNova@1015");
+
+            when(request.getRequestDispatcher("modificarSenha.jsp")).thenReturn(rd);
+
+            controller.atualizarSenha(request, response);
+
+            verify(request).setAttribute("retorno", "false");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testDeletarCadastro(){
+        try {
+            when(request.getParameter("id")).thenReturn(td.idAtual());
+            when(request.getRequestDispatcher("index.jsp")).thenReturn(rd);
+
+            controller.deletarCadastro(request, response);
+
+            verify(request).setAttribute("retorno", "true");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
