@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.*;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 
-import model.Dao;
-import model.Usuario;
-
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class TestController {
 
     HttpServletRequest request;
@@ -31,7 +34,7 @@ public class TestController {
     @Before
     public void init() {
         try {
-            // Simula o objeto, não vão ser feitas requisições ou repostas no navegador na
+            // Simula o objeto, não vão ser feitas requisições e respostas no navegador na
             // pratica
             request = Mockito.mock(HttpServletRequest.class);
             response = Mockito.mock(HttpServletResponse.class);
@@ -45,7 +48,9 @@ public class TestController {
     }
 
     @Test
-    public void testCreate() {
+    @Order(1)
+    @DisplayName("Teste de cadastro")
+    public void testA() {
         try {
             when(request.getParameter("nome")).thenReturn("Teste Form");
             when(request.getParameter("email")).thenReturn("testeMock@mail.com");
@@ -75,8 +80,9 @@ public class TestController {
     }
 
     @Test
-    public void testCreateExistente() {
-        // Teste de cadastrar com o mesmo E-mail
+    @Order(2)
+    @DisplayName("Teste de validação de e-mail existente no banco de dados ao realizar o cadastro")
+    public void testB() {
         try {
             when(request.getParameter("nome")).thenReturn("Teste Form");
             when(request.getParameter("email")).thenReturn("testeMock@mail.com");
@@ -103,7 +109,9 @@ public class TestController {
     }
 
     @Test
-    public void testSelect() {
+    @Order(3)
+    @DisplayName("Teste de logar no sistema")
+    public void testC() {
         try {
 
             when(request.getParameter("email")).thenReturn("testeMock@mail.com");
@@ -115,7 +123,7 @@ public class TestController {
 
             controller.select(request, response);
 
-            // Se método nunca foi chamado, logo o login foi realizado com sucesso
+            // Se o método nunca foi chamado, logo o login foi realizado com sucesso
             verify(request, never()).setAttribute("mensagem", "erro");
 
             // Se o e-mail e senha estiverem corretos será criada uma sessão
@@ -127,7 +135,9 @@ public class TestController {
     }
 
     @Test
-    public void testSelectInvalido() {
+    @Order(4)
+    @DisplayName("Teste de tentar entrar com a senha incorreta")
+    public void testD() {
         try {
             when(request.getParameter("email")).thenReturn("testeMockShazam@mail.com");
             when(request.getParameter("senha")).thenReturn("");
@@ -147,7 +157,9 @@ public class TestController {
     }
 
     @Test
-    public void testModificarSenhaEmail() {
+    @Order(5)
+    @DisplayName("Teste de enviar e-mail com uma nova senha para o usuário cadastrado")
+    public void testE() {
 
         try {
             when(request.getParameter("email")).thenReturn("tpereiraalves2013@outlook.com");
@@ -166,7 +178,9 @@ public class TestController {
     }
 
     @Test
-    public void testModificarSenhaInvalido() {
+    @Order(6)
+    @DisplayName("Teste de validação ao inserir um e-mail inexistente na base de dados para gerar uma nova senha")
+    public void testF() {
 
         try {
             when(request.getParameter("email")).thenReturn("inexistente@mail.com.br");
@@ -185,7 +199,9 @@ public class TestController {
     }
 
     @Test
-    public void testSelecionarAnimalExistente() {
+    @Order(7)
+    @DisplayName("Teste de pesquisar um animal")
+    public void testG() {
         try {
 
             when(request.getParameter("nomeAnimal")).thenReturn("Cavalo");
@@ -205,7 +221,9 @@ public class TestController {
     }
 
     @Test
-    public void testAlterarInfoAnimal() {
+    @Order(8)
+    @DisplayName("Teste de atualizar as informações do animal")
+    public void testH() {
         try {
             when(request.getParameter("id")).thenReturn(td.idAtual());
             when(request.getParameter("nomeAnimal")).thenReturn("Cavalo Árabe");
@@ -225,7 +243,9 @@ public class TestController {
     }
 
     @Test
-    public void testAtualizarSenhaCorreta() {
+    @Order(9)
+    @DisplayName("Teste de atualização da senha feita pelo próprio usuário, onde a senha está correta")
+    public void testI() {
         try {
 
             when(request.getParameter("email")).thenReturn("testeMock@mail.com");
@@ -244,7 +264,9 @@ public class TestController {
     }
 
     @Test
-    public void testAtualizarSenhaIncorreta() {
+    @Order(10)
+    @DisplayName("Teste de atualização da senha feita pelo próprio usuário, onde a senha está incorreta")
+    public void testJ() {
         try {
 
             when(request.getParameter("email")).thenReturn("testeMock@mail.com");
@@ -263,7 +285,9 @@ public class TestController {
     }
 
     @Test
-    public void testDeletarCadastro(){
+    @Order(11)
+    @DisplayName("Teste de deletar a conta")
+    public void testK() {
         try {
             when(request.getParameter("id")).thenReturn(td.idAtual());
             when(request.getRequestDispatcher("index.jsp")).thenReturn(rd);

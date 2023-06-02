@@ -1,6 +1,10 @@
 package model;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 import java.sql.Connection;
@@ -8,12 +12,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import org.junit.FixMethodOrder;
-import org.junit.runners.MethodSorters;
+// import static org.junit.Assert.assertEquals;
+// import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+// import org.junit.FixMethodOrder;
+// import org.junit.runners.MethodSorters;
+
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class TestDao {
 
     public String idAtual() throws SQLException {
@@ -29,7 +36,8 @@ public class TestDao {
     }
 
     @Test
-    // Teste de cadastrar um usuário
+    @Order(1)
+    @DisplayName("Teste de cadastrar um usuário")
     public void test1() throws SQLException {
 
         Usuario usuario = new Usuario();
@@ -58,7 +66,8 @@ public class TestDao {
     }
 
     @Test
-    // Teste de consultar email e senha
+    @Order(2)
+    @DisplayName("Teste de consultar e-mail e senha")
     public void test2() {
         /* Utilizando o cadastro criado acima */
         Usuario usuario = new Usuario();
@@ -73,7 +82,8 @@ public class TestDao {
     }
 
     @Test
-    // Teste de alterar a senha 1
+    @Order(3)
+    @DisplayName("1º Teste de alterar a senha")
     public void test3() throws SQLException {
         /* Utilizando o cadastro criado acima */
         String email = "testeAdicionar@mail.com";
@@ -93,7 +103,8 @@ public class TestDao {
     }
 
     @Test
-    // Teste de consultar o usuário por meio do e-mail
+    @Order(4)
+    @DisplayName("Teste de consultar o usuário por meio do e-mail")
     public void test4() {
         String emailUsuario = "testeAdicionar@mail.com";
         Usuario usuario = new Usuario();
@@ -105,7 +116,8 @@ public class TestDao {
     }
 
     @Test
-    // Teste de alterar a senha 2
+    @Order(5)
+    @DisplayName("2º Teste de alterar a senha ")
     public void test5() {
         String senhaAtual = "senhaTemp02";
         String novaSenha = "senha";
@@ -118,7 +130,8 @@ public class TestDao {
     }
 
     @Test
-    // Teste de consultar o animal cadastrado
+    @Order(6)
+    @DisplayName("Teste de consultar o animal cadastrado")
     public void test6() {
         // Busca com base no animal cadastrado acima.
         String animal = "Hamster";
@@ -129,15 +142,16 @@ public class TestDao {
 
         /*
          * Como a busca é feita no banco por meio do LIKE, caso exista algo relacionado
-         * ou próximo do nome passado,
-         * então sempre será retornado verdadeiro
+         * ou próximo do nome passado
+         * será retornado verdadeiro
          */
         assertTrue(animais.get(0).getNomeAnimal().contains(animal));
 
     }
 
     @Test
-    // Teste de atualizar os dados do animal
+    @Order(7)
+    @DisplayName("Teste de atualizar os dados do animal")
     public void test7() throws SQLException {
         TestDao td = new TestDao();
         String id = td.idAtual(); // ID é auto increment, sendo este do cadastro criado acima.
@@ -159,7 +173,8 @@ public class TestDao {
     }
 
     @Test
-    // Teste de deletar o cadastro
+    @Order(8)
+    @DisplayName("Teste de deletar o cadastro")
     public void test8() throws SQLException {
         TestDao td = new TestDao();
         String id = td.idAtual();
