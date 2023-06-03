@@ -11,13 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.*;
 
-import org.junit.Before;
+import org.junit.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
+
+import model.Dao;
+import model.Usuario;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class TestController {
@@ -84,7 +86,7 @@ public class TestController {
     @DisplayName("Teste de validação de e-mail existente no banco de dados ao realizar o cadastro")
     public void testB() {
         try {
-            when(request.getParameter("nome")).thenReturn("Teste Form");
+            when(request.getParameter("nome")).thenReturn("Teste Form 2");
             when(request.getParameter("email")).thenReturn("testeMock@mail.com");
             when(request.getParameter("senha")).thenReturn("123456");
             when(request.getParameter("telefone")).thenReturn("1234-5678");
@@ -101,6 +103,10 @@ public class TestController {
             // O conteúdo precisa ser diferente do anterior, pois o e-mail foi cadastrando
             // anteriormente
             verify(request).setAttribute("mensagem", "existente");
+
+            // Alterando o email para usar em um teste posterior de enviar email
+            when(request.getParameter("email")).thenReturn("testeMockTwo@mail.com");
+            controller.create(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,7 +150,7 @@ public class TestController {
 
             when(request.getSession()).thenReturn(session);
 
-            when(request.getRequestDispatcher("animalife.jsp")).thenReturn(rd);
+            when(request.getRequestDispatcher("index.jsp")).thenReturn(rd);
 
             controller.select(request, response);
 
@@ -162,7 +168,7 @@ public class TestController {
     public void testE() {
 
         try {
-            when(request.getParameter("email")).thenReturn("tpereiraalves2013@outlook.com");
+            when(request.getParameter("email")).thenReturn("testeMockTwo@mail.com");
 
             when(request.getRequestDispatcher("recuperarConta.jsp")).thenReturn(rd);
 
@@ -289,7 +295,10 @@ public class TestController {
     @DisplayName("Teste de deletar a conta")
     public void testK() {
         try {
-            when(request.getParameter("id")).thenReturn(td.idAtual());
+            // Vai realizar a exclusão do primeiro cadastro realizado
+            String primeiroCadastro = td.idAtual();
+            primeiroCadastro = Integer.toString(Integer.parseInt(primeiroCadastro) - 1);
+            when(request.getParameter("id")).thenReturn(primeiroCadastro);
             when(request.getRequestDispatcher("index.jsp")).thenReturn(rd);
 
             controller.deletarCadastro(request, response);
